@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KanbanPro | Crea tu flujo, a tu manera.</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/landing.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav class="topnav py-3">
+      <div
+        class="container-xl d-flex align-items-center justify-content-between"
+      >
+        <div class="d-flex align-items-center gap-4">
+          <span class="brand fw-bold fs-5" style="color: var(--on-surface)"
+            >KanbanPro</span
+          >
+          <div class="d-none d-md-flex gap-1">
+            <a href="#features" class="nav-link-subtle text-decoration-none"
+              >Características</a
+            >
+            <a href="#boards" class="nav-link-subtle text-decoration-none"
+              >Tableros</a
+            >
+            <a href="#" class="nav-link-subtle text-decoration-none">Team</a>
+            <a href="#" class="nav-link-subtle text-decoration-none">Planes</a>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <a
+            href="login.html"
+            class="btn btn-ghost text-decoration-none d-none d-sm-block"
+            >Inicia sesión</a
+          >
+          <a
+            href="register.html"
+            class="btn btn-primary-grad text-decoration-none"
+            >Registrarse</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container-xl px-4">
+        <div class="text-center">
+          <!-- <div class="pill-badge mb-4">
+            <span class="dot"></span>
+            v2.0 Now Available
+          </div> -->
+          <h1 class="mb-4">
+            Crea tu flujo de trabajo,<br />
+            <span
+              style="
+                background: linear-gradient(
+                  90deg,
+                  var(--primary),
+                  var(--primary-light)
+                );
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+              "
+              >a tu manera.</span
+            >
+          </h1>
+          <p
+            class="mx-auto mb-5"
+            style="
+              max-width: 560px;
+              font-size: 1.1rem;
+              color: var(--on-surface-variant);
+              line-height: 1.7;
+            "
+          >
+            La forma más limpia y sencilla de gestionar proyectos y equipos.
+            KanbanPro transforma el caos en claridad con un enfoque editorial
+            para la gestión de tareas.
+          </p>
+          <div
+            class="d-flex flex-column flex-sm-row gap-3 justify-content-center"
+          >
+            <a
+              href="register.html"
+              class="btn btn-hero-primary text-decoration-none"
+              >Comienza gratis</a
+            >
+            <!-- <button class="btn btn-hero-secondary">
+              <span class="material-symbols-outlined">play_circle</span>Watch
+              Demo
+            </button> -->
+          </div>
+        </div>
+
+        <!-- Board preview -->
+        <div class="preview-shell mt-5" id="boards">
+          <div class="row g-3">
+            <!-- To Do -->
+            <div class="col-12 col-md-4">
+              <div class="preview-col-header">
+                To Do <span class="preview-pill">3</span>
+              </div>
+              <div class="task-preview task-acc">
+                <div class="d-flex flex-wrap gap-1 mb-2">
+                  <span
+                    class="task-tag"
+                    style="
+                      background: rgba(79, 96, 124, 0.1);
+                      color: var(--secondary);
+                    "
+                    >Design</span
+                  >
+                </div>
+                <h6>Design System Audit</h6>
+                <p
+                  style="
+                    font-size: 0.7rem;
+                    color: var(--on-surface-variant);
+                    margin: 0.35rem 0 0;
+                  "
+                >
+                  Review all visual tokens for consistency across modules.
+                </p>
+                <div class="d-flex align-items-center gap-2 mt-2">
+                  <div
+                    style="
+                      width: 24px;
+                      height: 24px;
+                      border-radius: 50%;
+                      background: var(--surface-high);
+                      font-size: 0.6rem;
+                      font-weight: 700;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      color: var(--secondary);
+                    "
+                  >
+                    JD
+                  </div>
+                  <span
+                    style="
+                      font-size: 0.65rem;
+                      background: var(--surface-container);
+                      color: var(--outline);
+                      padding: 2px 8px;
+                      border-radius: 6px;
+                    "
+                    >Jun 24</span
+                  >
+                </div>
+              </div>
+              <div class="task-preview">
+                <h6>Client Onboarding</h6>
+                <div
+                  style="
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                    background: var(--surface-high);
+                    font-size: 0.6rem;
+                    font-weight: 700;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--secondary);
+                    margin-top: 0.5rem;
+                  "
+                >
+                  MK
+                </div>
+              </div>
+            </div>
+            <!-- In Progress -->
+            <div class="col-12 col-md-4">
+              <div class="preview-col-header">
+                In Progress
+                <span
+                  class="preview-pill"
+                  style="
+                    background: rgba(15, 87, 208, 0.1);
+                    color: var(--primary);
+                  "
+                  >2</span
+                >
+              </div>
+              <div class="task-preview task-acc">
+                <span
+                  class="task-tag mb-2 d-inline-block"
+                  style="
+                    background: rgba(79, 96, 124, 0.1);
+                    color: var(--secondary);
+                  "
+                  >Development</span
+                >
+                <h6>Integration with Stripe API for checkout flow</h6>
+                <div
+                  class="mt-2"
+                  style="
+                    background: var(--surface-high);
+                    border-radius: 4px;
+                    height: 4px;
+                  "
+                >
+                  <div
+                    style="
+                      width: 65%;
+                      height: 100%;
+                      border-radius: 4px;
+                      background: var(--primary);
+                    "
+                  ></div>
+                </div>
+                <div
+                  style="
+                    font-size: 0.65rem;
+                    color: var(--on-surface-variant);
+                    margin-top: 0.35rem;
+                  "
+                >
+                  65% complete
+                </div>
+              </div>
+              <div class="task-preview">
+                <span
+                  class="task-tag mb-2 d-inline-block"
+                  style="
+                    background: rgba(0, 104, 124, 0.1);
+                    color: var(--tertiary);
+                  "
+                  >Growth</span
+                >
+                <h6>Landing page A/B testing setup</h6>
+              </div>
+            </div>
+            <!-- Done -->
+            <div class="col-12 col-md-4">
+              <div class="preview-col-header">
+                Done
+                <span
+                  class="preview-pill"
+                  style="
+                    background: rgba(0, 104, 124, 0.1);
+                    color: var(--tertiary);
+                  "
+                  >1</span
+                >
+              </div>
+              <div class="task-preview" style="opacity: 0.6">
+                <span
+                  class="task-tag mb-2 d-inline-block"
+                  style="
+                    background: rgba(0, 104, 124, 0.1);
+                    color: var(--tertiary);
+                  "
+                  >Strategy</span
+                >
+                <h6 style="text-decoration: line-through">
+                  Q4 Roadmap definition and sign-off
+                </h6>
+                <div
+                  class="d-flex align-items-center justify-content-between mt-2"
+                >
+                  <div class="d-flex" style="gap: -6px">
+                    <div
+                      style="
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 50%;
+                        background: var(--surface-high);
+                        font-size: 0.55rem;
+                        font-weight: 700;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      JD
+                    </div>
+                    <div
+                      style="
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 50%;
+                        background: var(--surface-high);
+                        font-size: 0.55rem;
+                        font-weight: 700;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-left: -6px;
+                      "
+                    >
+                      MK
+                    </div>
+                  </div>
+                  <span
+                    class="material-symbols-outlined"
+                    style="
+                      color: var(--tertiary);
+                      font-size: 1rem;
+                      font-variation-settings: &quot;FILL&quot; 1;
+                    "
+                    >verified</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- AI bar -->
+          <div
+            class="d-flex align-items-center justify-content-between mt-3 px-3 py-2 rounded-pill"
+            style="
+              background: rgba(255, 255, 255, 0.6);
+              backdrop-filter: blur(8px);
+              border: 1px solid rgba(173, 179, 183, 0.12);
+            "
+          >
+            <div class="d-flex align-items-center gap-2">
+              <span
+                class="material-symbols-outlined"
+                style="color: var(--primary)"
+                >auto_awesome</span
+              >
+              <span style="font-size: 0.82rem; font-weight: 500"
+                >Programación automática de flujos de trabajo optimizados…</span
+              >
+            </div>
+            <span
+              class="btn btn-primary-grad py-1 px-3"
+              style="font-size: 0.75rem"
+              >Aplicar cambios</span
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section
+      class="py-5 mt-4"
+      style="background: var(--surface-low)"
+      id="features"
+    >
+      <div class="container-xl px-4">
+        <div class="row align-items-end mb-5">
+          <div class="col-md-6">
+            <h2
+              style="
+                font-size: clamp(1.75rem, 4vw, 2.5rem);
+                font-weight: 800;
+                letter-spacing: -0.02em;
+                line-height: 1.2;
+              "
+            >
+              Céntrate en el resultado,<br />no en la organización.
+            </h2>
+            <p class="mt-2" style="color: var(--on-surface-variant)">
+              Hemos eliminado los puntos de fricción de las herramientas
+              tradicionales para ayudarte a alcanzar tareas más complejas con
+              mayor rapidez.
+            </p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-12 col-md-4">
+            <div class="feat-card">
+              <div
+                class="feat-icon mb-3"
+                style="background: rgba(15, 87, 208, 0.08)"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="color: var(--primary)"
+                  >touch_app</span
+                >
+              </div>
+              <h3
+                style="
+                  font-size: 1.05rem;
+                  font-weight: 700;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Arrastra y suelta tareas
+              </h3>
+              <p
+                style="
+                  font-size: 0.875rem;
+                  color: var(--on-surface-variant);
+                  margin: 0;
+                  line-height: 1.6;
+                "
+              >
+                Transiciones fluidas entre columnas que se sienten orgánicas.
+                Organiza tus proyectos con la precisión de un editor
+                profesional.
+              </p>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="feat-card">
+              <div
+                class="feat-icon mb-3"
+                style="background: rgba(0, 104, 124, 0.08)"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="color: var(--tertiary)"
+                  >groups</span
+                >
+              </div>
+              <h3
+                style="
+                  font-size: 1.05rem;
+                  font-weight: 700;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Colaboración en tiempo real
+              </h3>
+              <p
+                style="
+                  font-size: 0.875rem;
+                  color: var(--on-surface-variant);
+                  margin: 0;
+                  line-height: 1.6;
+                "
+              >
+                Actualizaciones sin latencia para equipos distribuidos. Vea
+                quién está trabajando en qué, al instante.
+              </p>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="feat-card">
+              <div
+                class="feat-icon mb-3"
+                style="background: rgba(79, 96, 124, 0.08)"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  style="color: var(--secondary)"
+                  >splitscreen</span
+                >
+              </div>
+              <h3
+                style="
+                  font-size: 1.05rem;
+                  font-weight: 700;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Seguimiento de tareas sencillo
+              </h3>
+              <p
+                style="
+                  font-size: 0.875rem;
+                  color: var(--on-surface-variant);
+                  margin: 0;
+                  line-height: 1.6;
+                "
+              >
+                Los indicadores de microprogreso en la parte superior de cada
+                tarjeta te mantienen informado sin saturar tu vista.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-5">
+      <div class="container-xl px-4">
+        <div class="cta-block text-center">
+          <h2
+            class="text-white mb-4"
+            style="
+              font-size: clamp(1.75rem, 4vw, 2.75rem);
+              font-weight: 800;
+              letter-spacing: -0.02em;
+            "
+          >
+            ¿Listo para construir tu obra maestra?
+          </h2>
+          <a
+            href="register.html"
+            class="btn btn-hero-primary text-decoration-none"
+            >Comienza gratis</a
+          >
+          <p
+            class="mt-4 mb-0"
+            style="
+              font-size: 0.7rem;
+              text-transform: uppercase;
+              letter-spacing: 0.12em;
+              color: rgba(255, 255, 255, 0.35);
+            "
+          >
+            No se requiere tarjeta de crédito. Cancela cuando quieras.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-4">
+      <div
+        class="container-xl px-4 d-flex flex-column flex-md-row align-items-center justify-content-between gap-3"
+      >
+        <span class="brand fw-black" style="color: var(--primary)"
+          >KanbanPro</span
+        >
+        <div class="d-flex gap-4">
+          <a
+            href="#"
+            class="text-decoration-none"
+            style="
+              font-size: 0.7rem;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              color: var(--on-surface-variant);
+            "
+            >Privacy</a
+          >
+          <a
+            href="#"
+            class="text-decoration-none"
+            style="
+              font-size: 0.7rem;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              color: var(--on-surface-variant);
+            "
+            >Terms</a
+          >
+          <a
+            href="#"
+            class="text-decoration-none"
+            style="
+              font-size: 0.7rem;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              color: var(--on-surface-variant);
+            "
+            >API</a
+          >
+          <a
+            href="#"
+            class="text-decoration-none"
+            style="
+              font-size: 0.7rem;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              color: var(--on-surface-variant);
+            "
+            >Status</a
+          >
+        </div>
+        <span
+          style="
+            font-size: 0.7rem;
+            color: var(--outline-variant);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+          "
+          >© 2026 KanbanPro Inc.</span
+        >
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

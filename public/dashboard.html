@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KanbanPro | Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/dashboard.css" />
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+      <div class="d-flex align-items-center gap-2 mb-4">
+        <div
+          class="d-flex align-items-center justify-content-center rounded-2 bg-primary text-white"
+          style="width: 32px; height: 32px"
+        >
+          <span class="material-symbols-outlined" style="font-size: 18px"
+            >view_kanban</span
+          >
+        </div>
+        <div>
+          <div
+            class="brand fw-bold"
+            style="font-size: 0.9rem; color: var(--on-surface)"
+          >
+            KanbanPro
+          </div>
+          <div
+            style="
+              font-size: 0.65rem;
+              color: var(--on-surface-variant);
+              text-transform: uppercase;
+              letter-spacing: 0.06em;
+            "
+          >
+            Premium Plan
+          </div>
+        </div>
+      </div>
+
+      <nav class="flex-grow-1" id="sidebar-nav">
+        <a href="/boards.html" class="nav-link active" data-section="boards">
+          <span class="material-symbols-outlined">dashboard</span> Mis Tableros
+          <span class="badge-count" id="sidebar-boards-count">–</span>
+        </a>
+        <a href="#" class="nav-link" data-section="calendar">
+          <span class="material-symbols-outlined">calendar_today</span>
+          Calendario
+        </a>
+        <a href="#" class="nav-link" data-section="activity">
+          <span class="material-symbols-outlined">insights</span> Actividad
+        </a>
+        <a href="#" class="nav-link" data-section="team">
+          <span class="material-symbols-outlined">group</span> Equipo
+        </a>
+        <a href="#" class="nav-link" data-section="settings">
+          <span class="material-symbols-outlined">settings</span> Configuración
+        </a>
+      </nav>
+
+      <div
+        class="mt-auto pt-3 border-top"
+        style="border-color: rgba(173, 179, 183, 0.15) !important"
+      >
+        <div
+          class="d-flex align-items-center gap-2 p-2 rounded-2"
+          style="cursor: pointer"
+          id="user-profile-btn"
+        >
+          <div
+            class="avatar d-flex align-items-center justify-content-center fw-bold"
+            style="
+              width: 32px;
+              height: 32px;
+              background: var(--surface-highest);
+              border-radius: 50%;
+              font-size: 0.7rem;
+            "
+            id="sidebar-avatar"
+          >
+            JD
+          </div>
+          <div>
+            <div
+              style="font-size: 0.8rem; font-weight: 600"
+              id="sidebar-username"
+            >
+              Loading…
+            </div>
+            <div
+              style="font-size: 0.65rem; color: var(--on-surface-variant)"
+              id="sidebar-email"
+            >
+              –
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- SIDEBAR OVERLAY (mobile) -->
+    <div
+      id="sidebar-overlay"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 1039;
+        transition: opacity 0.3s;
+      "
+    ></div>
+
+    <!-- MAIN -->
+    <main id="main">
+      <!-- TOPBAR -->
+      <header class="topbar d-flex align-items-center gap-3">
+        <button
+          class="btn btn-sm d-md-none me-1"
+          id="sidebar-toggle"
+          style="color: var(--on-surface)"
+        >
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="flex-grow-1">
+          <div class="board-name" id="topbar-board-name">
+            Titulo del tablero
+          </div>
+          <div class="d-flex align-items-center gap-2 mt-1">
+            <span
+              class="badge rounded-pill"
+              style="
+                font-size: 0.6rem;
+                background: var(--surface-high);
+                color: var(--secondary);
+              "
+              id="topbar-task-count"
+              >– tasks</span
+            >
+            <!-- <span
+              class="badge rounded-pill"
+              style="
+                font-size: 0.6rem;
+                background: rgba(0, 104, 124, 0.1);
+                color: var(--tertiary);
+              "
+              id="topbar-member-count"
+              >– Miembros</span
+            > -->
+          </div>
+        </div>
+
+        <!-- <div class="search-wrap d-none d-md-block">
+          <span class="material-symbols-outlined icon">search</span>
+          <input
+            type="text"
+            class="search-input"
+            id="search-input"
+            placeholder="Search tasks…"
+            style="width: 220px"
+          />
+        </div> -->
+
+        <!-- <button
+          class="btn btn-sm d-flex align-items-center gap-1"
+          style="
+            background: var(--surface-high);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--on-surface-variant);
+          "
+          id="refresh-btn"
+          title="Refresh boards"
+        >
+          <span class="material-symbols-outlined" style="font-size: 1rem"
+            >refresh</span
+          >
+        </button> -->
+
+        <button
+          class="btn d-flex align-items-center gap-1 fw-semibold"
+          style="
+            background: linear-gradient(
+              135deg,
+              var(--primary),
+              var(--primary-light)
+            );
+            color: #fff;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            padding: 0.4rem 1rem;
+          "
+          id="new-task-btn"
+        >
+          <span class="material-symbols-outlined" style="font-size: 1rem"
+            >add</span
+          >
+          Nueva tarea
+        </button>
+      </header>
+
+      <!-- BOARD AREA -->
+      <div class="board-scroll" id="board-area">
+        <!-- Skeleton placeholders shown while loading -->
+        <div id="loading-skeletons" class="d-flex gap-3">
+          <div class="kanban-col" style="opacity: 0.5">
+            <div class="skeleton mb-2" style="height: 20px; width: 110px"></div>
+            <div class="col-body">
+              <div class="skeleton" style="height: 80px"></div>
+              <div class="skeleton" style="height: 60px"></div>
+            </div>
+          </div>
+          <div class="kanban-col" style="opacity: 0.4">
+            <div class="skeleton mb-2" style="height: 20px; width: 90px"></div>
+            <div class="col-body">
+              <div class="skeleton" style="height: 100px"></div>
+              <div class="skeleton" style="height: 70px"></div>
+            </div>
+          </div>
+          <div class="kanban-col" style="opacity: 0.3">
+            <div class="skeleton mb-2" style="height: 20px; width: 80px"></div>
+            <div class="col-body">
+              <div class="skeleton" style="height: 75px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MOBILE NAV -->
+    <!-- <nav class="mobile-nav d-md-none">
+      <button class="active">
+        <span
+          class="material-symbols-outlined"
+          style="font-variation-settings: &quot;FILL&quot; 1"
+          >dashboard</span
+        >Boards
+      </button>
+      <button>
+        <span class="material-symbols-outlined">calendar_today</span>Calendar
+      </button>
+      <button
+        class="fab d-flex align-items-center justify-content-center"
+        id="mobile-new-task"
+      >
+        <span class="material-symbols-outlined">add</span>
+      </button>
+      <button>
+        <span class="material-symbols-outlined">insights</span>Activity
+      </button>
+      <button>
+        <span class="material-symbols-outlined">settings</span>Settings
+      </button>
+    </nav> -->
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toast-area"></div>
+
+    <!-- NEW TASK MODAL -->
+    <div class="modal fade" id="newTaskModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 border-0 shadow">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title brand fw-bold">Nueva tarea</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body pt-2">
+            <div class="mb-3">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Titulo</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="task-title-input"
+                placeholder="Descripción…"
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                "
+              />
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label
+                  class="form-label"
+                  style="
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.07em;
+                    color: var(--on-surface-variant);
+                  "
+                  >Lista</label
+                >
+                <select
+                  class="form-select"
+                  id="task-status-input"
+                  style="
+                    background: var(--surface-high);
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                  "
+                >
+                  <option value="todo">To Do</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="done">Done</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label
+                  class="form-label"
+                  style="
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.07em;
+                    color: var(--on-surface-variant);
+                  "
+                  >Fecha termino</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="task-due-input"
+                  style="
+                    background: var(--surface-high);
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                  "
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Tag</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="task-tag-input"
+                placeholder="ej. Producto, Dev, QA"
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                "
+              />
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button
+              class="btn btn-sm"
+              data-bs-dismiss="modal"
+              style="color: var(--on-surface-variant)"
+            >
+              Cancelar
+            </button>
+            <button
+              class="btn fw-bold"
+              id="save-task-btn"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary),
+                  var(--primary-light)
+                );
+                color: #fff;
+                border-radius: 99px;
+                padding: 0.4rem 1.4rem;
+                font-size: 0.85rem;
+              "
+            >
+              Crear tarea
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="newColumnModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content rounded-3 border-0 shadow">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title brand fw-bold" style="font-size: 1rem">
+              Nueva lista
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body pt-2">
+            <label
+              class="form-label"
+              style="
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.07em;
+                color: var(--on-surface-variant);
+              "
+              >Titulo</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="col-name-input"
+              placeholder="ej. Realizado, Backlog…"
+              style="
+                background: var(--surface-high);
+                border: none;
+                border-radius: 8px;
+              "
+            />
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button
+              class="btn btn-sm"
+              data-bs-dismiss="modal"
+              style="color: var(--on-surface-variant)"
+            >
+              Cancelar
+            </button>
+            <button
+              class="btn fw-bold"
+              id="save-col-btn"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary),
+                  var(--primary-light)
+                );
+                color: #fff;
+                border-radius: 99px;
+                padding: 0.4rem 1.4rem;
+                font-size: 0.85rem;
+              "
+            >
+              Crear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/dashboard.js"></script>
+    <style>
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </body>
+</html>

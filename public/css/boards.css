@@ -1,0 +1,183 @@
+#new-board-btn:hover {
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.board-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.5rem;
+  border: 1px solid rgba(173, 179, 183, 0.1);
+  transition:
+    box-shadow 0.25s,
+    transform 0.2s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.board-card:hover {
+  box-shadow: 0 8px 28px rgba(15, 87, 208, 0.08);
+  transform: translateY(-2px);
+  color: inherit;
+}
+.board-card .accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+.board-card h5 {
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 0.975rem;
+  margin: 0 0 0.35rem;
+}
+.board-card .desc {
+  font-size: 0.8rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+  margin: 0 0 1rem;
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.board-card .meta {
+  font-size: 0.7rem;
+  color: var(--on-surface-variant);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.board-card .delete-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--outline-variant);
+  padding: 0.2rem;
+  border-radius: 6px;
+  opacity: 0;
+  transition:
+    opacity 0.2s,
+    color 0.2s,
+    background 0.2s;
+}
+.board-card:hover .delete-btn {
+  opacity: 1;
+}
+.board-card .delete-btn:hover {
+  color: var(--error);
+  background: rgba(168, 56, 54, 0.08);
+}
+
+.board-new {
+  border: 4px dashed rgba(45, 128, 183, 0.3) !important;
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  min-height: 160px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  background: transparent;
+}
+.board-new:hover {
+  background: rgba(15, 87, 208, 0.03) !important;
+  border-color: rgba(57, 69, 146, 0.305) !important;
+}
+.board-new .icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(15, 87, 208, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition:
+    border-color 0.2s,
+    transform 0.15s;
+  flex-shrink: 0;
+}
+.swatch.selected {
+  border-color: var(--on-surface);
+  transform: scale(1.15);
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface-high) 25%,
+    var(--surface-highest) 50%,
+    var(--surface-high) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+.filter-tab {
+  background: none;
+  border: none;
+  border-radius: 99px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.filter-tab.active {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.confirm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  z-index: 10;
+}

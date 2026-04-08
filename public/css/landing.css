@@ -1,0 +1,219 @@
+/* Nav */
+.topnav {
+  background: rgba(248, 249, 251, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(173, 179, 183, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+.nav-link-subtle {
+  color: var(--on-surface-variant);
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.875rem;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.nav-link-subtle:hover {
+  background: var(--surface-low);
+  color: var(--on-surface);
+}
+
+.btn-primary-grad {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  transition: transform 0.2s;
+}
+.btn-primary-grad:hover {
+  transform: scale(0.97);
+  color: #fff;
+}
+.btn-ghost {
+  background: transparent;
+  border: none;
+  border-radius: 99px;
+  color: var(--on-surface-variant);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  transition: color 0.2s;
+}
+.btn-ghost:hover {
+  color: var(--primary);
+}
+
+/* Hero */
+.hero {
+  padding: 5rem 0 4rem;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface-high);
+  border-radius: 99px;
+  padding: 0.35rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+}
+.pill-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.btn-hero-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 0.9rem 2.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 8px 24px rgba(15, 87, 208, 0.25);
+  transition: transform 0.2s;
+}
+.btn-hero-primary:hover {
+  transform: scale(0.97);
+  color: #fff;
+}
+.btn-hero-secondary {
+  background: transparent;
+  border: none;
+  color: var(--on-surface);
+  border-radius: 99px;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+.btn-hero-secondary:hover {
+  background: var(--surface-container);
+}
+
+/* Dashboard preview */
+.preview-shell {
+  background: var(--surface-low);
+  border-radius: 24px;
+  padding: 1.5rem;
+  border: 1px solid rgba(173, 179, 183, 0.08);
+  box-shadow: 0 24px 64px rgba(15, 87, 208, 0.04);
+}
+.preview-col-header {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--on-surface);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+.preview-pill {
+  font-size: 0.6rem;
+  padding: 1px 7px;
+  border-radius: 99px;
+  background: var(--surface-high);
+  color: var(--secondary);
+}
+.task-preview {
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.85rem;
+  border: 1px solid rgba(173, 179, 183, 0.08);
+  margin-bottom: 0.65rem;
+}
+.task-preview h6 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+.task-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+.task-acc {
+  border-top: 2px solid var(--primary);
+}
+
+/* Features */
+.feat-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  transition: box-shadow 0.3s;
+  cursor: default;
+}
+.feat-card:hover {
+  box-shadow: 0 8px 32px rgba(15, 87, 208, 0.06);
+}
+.feat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.feat-card:hover .feat-icon {
+  transform: scale(1.1);
+}
+
+/* CTA */
+.cta-block {
+  background: #0c0f10;
+  border-radius: 32px;
+  padding: 4rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.cta-block::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -10%;
+  width: 60%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(15, 87, 208, 0.12), transparent 70%);
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid rgba(173, 179, 183, 0.12);
+  background: var(--surface);
+}

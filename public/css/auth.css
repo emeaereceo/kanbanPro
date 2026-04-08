@@ -1,0 +1,119 @@
+body {
+  min-height: 100vh;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 12px 48px rgba(15, 87, 208, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+.auth-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--tertiary), #3ccef0);
+}
+
+.field-wrap {
+  position: relative;
+}
+.field-wrap .fi {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--on-surface-variant);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+.field-wrap input {
+  padding-left: 2.8rem;
+  background: var(--surface-highest);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: var(--on-surface);
+  transition: box-shadow 0.2s;
+}
+.field-wrap input:focus {
+  box-shadow: 0 0 0 2px rgba(15, 87, 208, 0.3);
+  background: #fff;
+}
+.toggle-pw {
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--outline);
+  cursor: pointer;
+}
+.toggle-pw:hover {
+  color: var(--on-surface);
+}
+
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--on-surface-variant);
+  margin-bottom: 0.45rem;
+  display: block;
+}
+
+.error-msg {
+  display: none;
+  font-size: 0.78rem;
+  color: #a83836;
+  margin-top: 0.35rem;
+}
+.error-msg.show {
+  display: block;
+}
+
+.btn-primary-grad {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: #fff;
+  border: none;
+  border-radius: 99px;
+  padding: 0.85rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition:
+    transform 0.2s,
+    opacity 0.2s;
+}
+.btn-primary-grad:hover:not(:disabled) {
+  transform: scale(0.98);
+  color: #fff;
+}
+.btn-primary-grad:disabled {
+  opacity: 0.7;
+}
+
+.social-btn {
+  background: var(--surface);
+  border: 1px solid rgba(173, 179, 183, 0.2);
+  border-radius: 99px;
+  padding: 0.55rem;
+  transition: background 0.2s;
+}
+.social-btn:hover {
+  background: var(--surface-high);
+}
+
+.bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
