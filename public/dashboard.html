@@ -299,7 +299,7 @@
                 type="text"
                 class="form-control"
                 id="task-title-input"
-                placeholder="Descripción…"
+                placeholder="Titulo..."
                 style="
                   background: var(--surface-high);
                   border: none;
@@ -307,8 +307,32 @@
                 "
               />
             </div>
+            <div class="mb-3">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Descripción</label
+              >
+              <textarea
+                type="text"
+                class="form-control"
+                id="task-description-input"
+                placeholder="Descripción…"
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                "
+              ></textarea>
+            </div>
             <div class="row g-2 mb-3">
-              <div class="col-6">
+              <div class="col-12">
                 <label
                   class="form-label"
                   style="
@@ -330,10 +354,34 @@
                     font-size: 0.85rem;
                   "
                 >
-                  <option value="todo">To Do</option>
+                  <!-- <option value="todo">To Do</option>
                   <option value="in_progress">In Progress</option>
-                  <option value="done">Done</option>
+                  <option value="done">Done</option> -->
                 </select>
+              </div>
+              <div class="col-6">
+                <label
+                  class="form-label"
+                  style="
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.07em;
+                    color: var(--on-surface-variant);
+                  "
+                  >Fecha Inicio</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="task-start-input"
+                  style="
+                    background: var(--surface-high);
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                  "
+                />
               </div>
               <div class="col-6">
                 <label
@@ -484,12 +532,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/dashboard.js"></script>
-    <style>
+    <!-- <style>
       @keyframes spin {
         to {
           transform: rotate(360deg);
         }
       }
-    </style>
+    </style> -->
   </body>
 </html>

@@ -147,17 +147,17 @@ export const deleteTablero = async (req, res) => {
 // ─────────────────────────────────────────────
 
 export const createLista = async (req, res) => {
-  const { tableroId } = req.params;
+  const { boardId } = req.params;
   const { name } = req.body;
 
   if (!name) return res.status(400).json({ error: "El nombre es requerido" });
 
   try {
-    const tablero = await Tablero.findByPk(tableroId);
+    const tablero = await Tablero.findByPk(boardId);
     if (!tablero)
       return res.status(404).json({ error: "Tablero no encontrado" });
 
-    const lista = await Lista.create({ name, boardId: tableroId });
+    const lista = await Lista.create({ name, boardId: boardId });
     return res.status(201).json(lista);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -202,35 +202,23 @@ export const deleteLista = async (req, res) => {
 // ─────────────────────────────────────────────
 
 export const createTarjeta = async (req, res) => {
-  const { listaId } = req.params;
-  const {
-    title,
-    description,
-    priority,
-    tag,
-    status,
-    start_date,
-    due_date,
-    autor,
-  } = req.body;
+  const { listId } = req.params;
+  const { title, description, author, tag, start_date, due_date } = req.body;
 
   if (!title) return res.status(400).json({ error: "El título es requerido" });
 
   try {
-    const lista = await Lista.findByPk(listaId);
+    const lista = await Lista.findByPk(listId);
     if (!lista) return res.status(404).json({ error: "Lista no encontrada" });
 
     const tarjeta = await Tarjeta.create({
       title,
       description,
-      priority,
       tag,
-      status,
-      creation_date: new Date(),
       start_date,
       due_date,
-      autor,
-      listId: listaId,
+      author,
+      listId,
     });
     return res.status(201).json(tarjeta);
   } catch (error) {

@@ -24,6 +24,8 @@ const API = (() => {
     getLists: (boardId) => request("GET", `/boards/${boardId}/lists`),
     // Columns / Status
     // getColumns: (boardId) => request("GET", `/boards/${boardId}/columns`),
+    createList: (boardId, data) =>
+      request("POST", `/boards/${boardId}/lists`, data),
 
     // Tasks
     // getTasks: (boardId) => request("GET", `/boards/${boardId}/tasks`),
@@ -184,6 +186,26 @@ function renderTask(task) {
 function renderBoard(listas) {
   const area = document.getElementById("board-area");
   area.innerHTML = "";
+
+  // Estado vacío
+  if (!listas || listas.length === 0) {
+    area.innerHTML = `
+      <div class="d-flex flex-column align-items-center justify-content-center w-100 py-5" style="color:var(--on-surface-variant)">
+        <span class="material-symbols-outlined mb-3" style="font-size:3rem;opacity:.4">view_kanban</span>
+        <p class="mb-1" style="font-weight:600">Este tablero no tiene listas aún</p>
+        <p class="mb-3" style="font-size:.85rem;opacity:.6">Crea una lista para empezar a organizar tus tareas</p>
+        <button class="btn btn-sm btn-primary" id="empty-add-col-btn">
+          <span class="material-symbols-outlined" style="font-size:1rem;vertical-align:middle">add</span> Nueva lista
+        </button>
+      </div>`;
+
+    document
+      .getElementById("empty-add-col-btn")
+      .addEventListener("click", () => {
+        new bootstrap.Modal(document.getElementById("newColumnModal")).show();
+      });
+    return; // ← sale antes de intentar renderizar columnas
+  }
   const pillClasses = [
     "bg-primary-soft",
     "bg-secondary-soft",
@@ -237,20 +259,19 @@ function renderBoard(listas) {
 //const ACTIVE_BOARD_ID = 1; // ← replace with dynamic board selector if needed
 const params = new URLSearchParams(window.location.search);
 const ACTIVE_BOARD_ID = parseInt(params.get("board")) || 1;
+console.log("tablero", ACTIVE_BOARD_ID);
 
 async function loadUser() {
   try {
     const { user } = await API.getCurrentUser();
+    console.log(user);
 
     document.getElementById("sidebar-username").textContent = user.name;
     document.getElementById("sidebar-email").textContent = user.email;
     document.getElementById("sidebar-avatar").textContent =
       user.initials || user.name.slice(0, 2).toUpperCase();
   } catch {
-    const u = MOCK.user;
-    document.getElementById("sidebar-username").textContent = u.name;
-    document.getElementById("sidebar-email").textContent = u.email;
-    document.getElementById("sidebar-avatar").textContent = u.initials;
+    console.warn("No se pudo cargar el usuario");
   }
 }
 
@@ -258,16 +279,15 @@ async function loadUser() {
 async function loadBoard() {
   try {
     const board = await API.getBoardById(ACTIVE_BOARD_ID);
-
     applyBoardData(board);
-  } catch {
+  } catch (err) {
     // Fallback to mock
-    applyBoardData(MOCK.board, MOCK.tasks);
-    showToast("Using demo data — connect your API.", "warning");
+    console.error("Error cargando el tablero:", err);
+    showToast("Error cargando el tablero.", "error");
   }
 }
 
-async function applyBoardData(board, tasks) {
+async function applyBoardData(board) {
   const totalTasks = (board.Listas || []).reduce(
     (acc, lista) => acc + (lista.Tarjetas || []).length,
     0,
@@ -282,27 +302,36 @@ async function applyBoardData(board, tasks) {
   document.getElementById("sidebar-boards-count").textContent =
     `${totalBoards.length}`;
 
+  const select = document.getElementById("task-status-input");
+  select.innerHTML = board.Listas.map(
+    (lista) => `<option value="${lista.id}">${lista.name}</option>`,
+  ).join("");
+
   renderBoard(board.Listas || []);
 }
 
 /* ============================================================
-         SEARCH
-         ============================================================ */
-// const AppState = { tasks: [] };
-
-/* ============================================================
-         NEW TASK
-         ============================================================ */
+    NEW TASK  
+  ============================================================ */
 async function handleCreateTask() {
+  const { user } = await API.getCurrentUser();
+
   const title = document.getElementById("task-title-input").value.trim();
   if (!title) return;
+
+  const description = document
+    .getElementById("task-description-input")
+    .value.trim();
 
   // task-status-input ahora guarda el listId (data-col del botón)
   const listId = document.getElementById("task-status-input").value;
 
   const payload = {
     title,
-    dueDate: document.getElementById("task-due-input").value || null,
+    description,
+    author: user.email,
+    start_date: document.getElementById("task-start-input").value || new Date(),
+    due_date: document.getElementById("task-due-input").value || null,
     tag: document.getElementById("task-tag-input").value.trim() || "General",
     tagColor: "secondary",
   };
@@ -364,6 +393,17 @@ document
   ?.addEventListener("click", () =>
     new bootstrap.Modal(document.getElementById("newTaskModal")).show(),
   );
+
+document
+  .getElementById("newTaskModal")
+  .addEventListener("hidden.bs.modal", () => {
+    document.getElementById("task-title-input").value = "";
+    document.getElementById("task-description-input").value = "";
+    document.getElementById("task-status-input").value = "";
+    document.getElementById("task-due-input").value = "";
+    document.getElementById("task-start-input").value = "";
+    document.getElementById("task-tag-input").value = "";
+  });
 
 /* ============================================================
          MOBILE SIDEBAR TOGGLE
