@@ -19,18 +19,12 @@ const API = (() => {
     // Boards
     getBoards: () => request("GET", "/boards"),
     getBoardById: (id) => request("GET", `/boards/${id}`),
-    // createBoard: (data) => request("POST", "/boards", data),
 
     getLists: (boardId) => request("GET", `/boards/${boardId}/lists`),
-    // Columns / Status
-    // getColumns: (boardId) => request("GET", `/boards/${boardId}/columns`),
+
     createList: (boardId, data) =>
       request("POST", `/boards/${boardId}/lists`, data),
 
-    // Tasks
-    // getTasks: (boardId) => request("GET", `/boards/${boardId}/tasks`),
-    // createTask: (boardId, data) =>
-    //   request("POST", `/boards/${boardId}/tasks`, data),
     createTask: (listId, data) =>
       request("POST", `/lists/${listId}/tasks`, data),
     updateTask: (taskId, data) => request("PUT", `/tasks/${taskId}`, data),
@@ -40,94 +34,10 @@ const API = (() => {
 
     // Users
     getCurrentUser: () => request("GET", "/users/me"),
-    // getBoardMembers: (boardId) => request("GET", `/boards/${boardId}/members`),
+
+    logout: () => request("POST", "/auth/logout"),
   };
 })();
-
-/* ============================================================
-         MOCK DATA — used when API is unavailable (remove in prod)
-         ============================================================ */
-// const MOCK = {
-//   user: {
-//     name: "Jordan Doe",
-//     email: "jordan@company.com",
-//     initials: "JD",
-//   },
-//   board: {
-//     id: 1,
-//     name: "Product Launch Board",
-//     taskCount: 6,
-//     memberCount: 4,
-//   },
-//   tasks: [
-//     {
-//       id: 1,
-//       title: "Design System Audit",
-//       status: "todo",
-//       tag: "Design",
-//       tagColor: "secondary",
-//       progress: null,
-//       assignees: ["JD"],
-//       dueDate: "Jun 24",
-//       accent: true,
-//     },
-//     {
-//       id: 2,
-//       title: "Client Onboarding Flow",
-//       status: "todo",
-//       tag: "UX",
-//       tagColor: "secondary",
-//       progress: null,
-//       assignees: ["MK"],
-//       dueDate: null,
-//       accent: false,
-//     },
-//     {
-//       id: 3,
-//       title: "Competitive Analysis Report",
-//       status: "todo",
-//       tag: "Strategy",
-//       tagColor: "tertiary",
-//       progress: null,
-//       assignees: ["AL"],
-//       dueDate: "Jul 2",
-//       accent: false,
-//     },
-//     {
-//       id: 4,
-//       title: "Integration with Stripe API for checkout flow",
-//       status: "in_progress",
-//       tag: "Development",
-//       tagColor: "secondary",
-//       progress: 65,
-//       assignees: ["MK"],
-//       dueDate: null,
-//       accent: true,
-//     },
-//     {
-//       id: 5,
-//       title: "Landing page A/B testing setup",
-//       status: "in_progress",
-//       tag: "Growth",
-//       tagColor: "tertiary",
-//       progress: null,
-//       assignees: ["JD"],
-//       dueDate: null,
-//       accent: false,
-//     },
-//     {
-//       id: 6,
-//       title: "Q4 Roadmap definition and sign-off",
-//       status: "done",
-//       tag: "Strategy",
-//       tagColor: "tertiary",
-//       progress: null,
-//       assignees: ["JD", "MK", "AL"],
-//       dueDate: null,
-//       accent: false,
-//     },
-//   ],
-// };
 
 function tagClass(color) {
   return color === "tertiary"
@@ -172,7 +82,7 @@ function renderTask(task) {
             <div class="d-flex flex-wrap gap-1 mb-2">
               <span class="tag ${tagClass(task.tagColor)}">${task.tag || ""}</span>
             </div>
-            <h4>${task.title}</h4>
+            <h5>${task.title}</h5>
             <div class="d-flex align-items-center justify-content-between mt-2">
               <div class="d-flex align-items-center">
                 ${due}
@@ -205,7 +115,7 @@ function renderBoard(listas) {
       .addEventListener("click", () => {
         new bootstrap.Modal(document.getElementById("newColumnModal")).show();
       });
-    return; // ← sale antes de intentar renderizar columnas
+    return;
   }
   const pillClasses = [
     "bg-primary-soft",
@@ -259,7 +169,7 @@ function renderBoard(listas) {
     card.addEventListener("click", () => {
       // Busca la tarjeta en las listas del board actual
       const taskId = parseInt(card.dataset.taskId);
-      const board = /* necesitas tener el board en scope */ AppState.board;
+      const board = AppState.board;
       const task = board.Listas.flatMap((l) => l.Tarjetas).find(
         (t) => t.id === taskId,
       );
@@ -268,10 +178,6 @@ function renderBoard(listas) {
   });
 }
 
-/* ============================================================
-         DATA LOADING
-         ============================================================ */
-//const ACTIVE_BOARD_ID = 1; // ← replace with dynamic board selector if needed
 const params = new URLSearchParams(window.location.search);
 const ACTIVE_BOARD_ID = parseInt(params.get("board")) || 1;
 
@@ -288,7 +194,6 @@ async function loadUser() {
   }
 }
 
-// Es necesario llamar esta función cada vez que se crea una tarea, una lista o un tablero
 async function loadBoard() {
   try {
     const board = await API.getBoardById(ACTIVE_BOARD_ID);
@@ -324,9 +229,6 @@ async function applyBoardData(board) {
   renderBoard(board.Listas || []);
 }
 
-/* ============================================================
-    NEW TASK  
-  ============================================================ */
 async function handleCreateTask() {
   const { user } = await API.getCurrentUser();
 
@@ -377,9 +279,6 @@ document
     new bootstrap.Modal(document.getElementById("newTaskModal")).show(),
   );
 
-/* ============================================================
-    VIEW AND EDIT TASK  
-  ============================================================ */
 const AppState = { board: null };
 function openTaskDetail(task) {
   document.getElementById("detail-title-input").value = task.title || "";
@@ -435,16 +334,13 @@ document
     document.getElementById("save-detail-btn").dataset.taskId = "";
   });
 
-/* ============================================================
-   NEW COLUMN
-   ============================================================ */
 document.getElementById("save-col-btn").addEventListener("click", async () => {
   const name = document.getElementById("col-name-input").value.trim();
   if (!name) return;
 
   try {
-    await API.createList(ACTIVE_BOARD_ID, { name }); // POST al backend
-    await loadBoard(); // recarga todo desde el backend
+    await API.createList(ACTIVE_BOARD_ID, { name });
+    await loadBoard();
   } catch {
     showToast("No se pudo crear la lista.", "error");
   } finally {
@@ -453,7 +349,6 @@ document.getElementById("save-col-btn").addEventListener("click", async () => {
     ).hide();
     document.getElementById("col-name-input").value = "";
   }
-  // showToast(`Column "${name}" added.`, "success");
 });
 document
   .getElementById("new-task-btn")
@@ -477,9 +372,6 @@ document
     document.getElementById("task-tag-input").value = "";
   });
 
-/* ============================================================
-         MOBILE SIDEBAR TOGGLE
-         ============================================================ */
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("sidebar-overlay");
 
@@ -499,9 +391,6 @@ document.getElementById("sidebar-toggle")?.addEventListener("click", () => {
 });
 overlay.addEventListener("click", closeSidebar);
 
-/* ============================================================
-         TOAST HELPER
-         ============================================================ */
 function showToast(message, type = "info") {
   const colors = {
     success: "#198754",
@@ -521,16 +410,23 @@ function showToast(message, type = "info") {
   setTimeout(() => el.remove(), 4000);
 }
 
-/* ============================================================
-         INIT
-         ============================================================ */
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  try {
+    await API.logout();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    window.location.href = "/login.html";
+  }
+});
+
 (async function init() {
   try {
-    await API.getCurrentUser(); // si no hay token, lanza error 401
+    await API.getCurrentUser();
     document.body.style.visibility = "visible";
   } catch {
-    window.location.href = "/login.html"; // redirige al login
-    return; // detiene el resto del init
+    window.location.href = "/login.html";
+    return;
   }
   await Promise.all([loadUser(), loadBoard()]);
 })();

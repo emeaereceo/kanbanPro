@@ -120,6 +120,16 @@
           </div>
         </div>
       </div>
+      <div class="mt-2">
+        <button
+          id="logout-btn"
+          class="nav-link w-100 text-start border-0"
+          style="background: none; color: var(--error)"
+        >
+          <span class="material-symbols-outlined">logout</span>
+          Cerrar sesión
+        </button>
+      </div>
     </aside>
 
     <!-- OVERLAY -->
@@ -156,16 +166,7 @@
             Loading…
           </div>
         </div>
-        <!-- <div class="search-wrap d-none d-md-block">
-          <span class="material-symbols-outlined icon">search</span>
-          <input
-            type="text"
-            class="search-input"
-            id="search-input"
-            placeholder="Search boards…"
-            style="width: 200px"
-          />
-        </div> -->
+
         <button
           class="btn d-flex align-items-center gap-1 fw-semibold"
           style="
@@ -190,24 +191,6 @@
 
       <!-- CONTENT -->
       <div class="p-4" style="max-width: 1200px; margin: 0 auto; width: 100%">
-        <!-- Filter tabs -->
-        <!-- <div
-          class="d-flex gap-1 mb-4 p-1 rounded-3 d-inline-flex"
-          style="background: var(--surface-high)"
-        >
-          <button class="filter-tab active" data-filter="all">All</button>
-          <button class="filter-tab" data-filter="mine">Mine</button>
-          <button class="filter-tab" data-filter="shared">Shared</button>
-          <button class="filter-tab" data-filter="starred">
-            <span
-              class="material-symbols-outlined"
-              style="font-size: 0.9rem; vertical-align: middle"
-              >star</span
-            >
-            Starred
-          </button>
-        </div> -->
-
         <!-- Boards grid -->
         <div class="row g-3" id="boards-grid">
           <!-- Skeleton -->
@@ -499,6 +482,235 @@
                 role="status"
               ></div>
             </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT BOARD MODAL -->
+    <div class="modal fade" id="editBoardModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 border-0 shadow">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title brand fw-bold">Editar Tablero</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body pt-2">
+            <div class="mb-3">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.7rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Nombre tablero *</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="edit-board-name-input"
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                "
+              />
+              <div
+                style="
+                  font-size: 0.72rem;
+                  color: var(--error);
+                  margin-top: 0.3rem;
+                  display: none;
+                "
+                id="edit-board-name-error"
+              >
+                El nombre es requerido.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.7rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Descripción</label
+              >
+              <textarea
+                class="form-control"
+                id="edit-board-desc-input"
+                rows="2"
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                  resize: none;
+                  font-size: 0.875rem;
+                "
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label
+                class="form-label d-block"
+                style="
+                  font-size: 0.7rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Tema</label
+              >
+              <div class="d-flex gap-2 flex-wrap" id="edit-color-swatches">
+                <div
+                  class="swatch"
+                  data-color="#0f57d0"
+                  style="background: #0f57d0"
+                ></div>
+                <div
+                  class="swatch"
+                  data-color="#00687c"
+                  style="background: #00687c"
+                ></div>
+                <div
+                  class="swatch"
+                  data-color="#7c4dff"
+                  style="background: #7c4dff"
+                ></div>
+                <div
+                  class="swatch"
+                  data-color="#e91e63"
+                  style="background: #e91e63"
+                ></div>
+                <div
+                  class="swatch"
+                  data-color="#f59e0b"
+                  style="background: #f59e0b"
+                ></div>
+                <div
+                  class="swatch"
+                  data-color="#198754"
+                  style="background: #198754"
+                ></div>
+                <div
+                  class="swatch"
+                  data-color="#6c757d"
+                  style="background: #6c757d"
+                ></div>
+              </div>
+            </div>
+            <div>
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.7rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Visibilidad</label
+              >
+              <div class="d-flex gap-2">
+                <label
+                  class="d-flex align-items-center gap-2 p-3 rounded-3 flex-grow-1"
+                  style="
+                    background: var(--surface-high);
+                    cursor: pointer;
+                    font-size: 0.82rem;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="edit-visibility"
+                    value="private"
+                    class="form-check-input mt-0"
+                  />
+                  <span
+                    class="material-symbols-outlined"
+                    style="font-size: 1rem"
+                    >lock</span
+                  >
+                  Privado
+                </label>
+                <label
+                  class="d-flex align-items-center gap-2 p-3 rounded-3 flex-grow-1"
+                  style="
+                    background: var(--surface-high);
+                    cursor: pointer;
+                    font-size: 0.82rem;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="edit-visibility"
+                    value="shared"
+                    class="form-check-input mt-0"
+                  />
+                  <span
+                    class="material-symbols-outlined"
+                    style="font-size: 1rem"
+                    >group</span
+                  >
+                  Compartido
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal-footer border-0 pt-0 d-flex justify-content-between"
+          >
+            <button
+              class="btn btn-sm d-flex align-items-center gap-1"
+              id="delete-board-btn"
+              style="color: var(--error); font-size: 0.82rem"
+            >
+              <span class="material-symbols-outlined" style="font-size: 1rem"
+                >delete</span
+              >
+              Eliminar tablero
+            </button>
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-sm"
+                data-bs-dismiss="modal"
+                style="color: var(--on-surface-variant)"
+              >
+                Cancelar
+              </button>
+              <button
+                class="btn fw-bold d-flex align-items-center gap-2"
+                id="update-board-btn"
+                style="
+                  background: linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--primary-light)
+                  );
+                  color: #fff;
+                  border-radius: 99px;
+                  padding: 0.4rem 1.4rem;
+                  font-size: 0.85rem;
+                "
+              >
+                Guardar
+                <div
+                  class="spinner-border spinner-border-sm d-none"
+                  id="edit-board-spinner"
+                  role="status"
+                ></div>
+              </button>
+            </div>
           </div>
         </div>
       </div>

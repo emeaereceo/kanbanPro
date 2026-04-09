@@ -111,21 +111,22 @@ export const createTablero = async (req, res) => {
   }
 };
 
-// export const updateTablero = async (req, res) => {
-//   const { tableroId } = req.params;
-//   const { name } = req.body;
+export const updateTablero = async (req, res) => {
+  const { boardId } = req.params;
+  const { name, description, color, visibility } = req.body;
 
-//   try {
-//     const tablero = await Tablero.findByPk(tableroId);
-//     if (!tablero)
-//       return res.status(404).json({ error: "Tablero no encontrado" });
+  const userId = req.user.id;
+  try {
+    const tablero = await Tablero.findByPk(boardId);
+    if (!tablero)
+      return res.status(404).json({ error: "Tablero no encontrado" });
 
-//     await tablero.update({ name });
-//     return res.json(tablero);
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
+    await tablero.update({ name, description, color, visibility, userId });
+    return res.json(tablero);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
 
 export const deleteTablero = async (req, res) => {
   const { boardId } = req.params;

@@ -1,9 +1,5 @@
-/* ============================================================
-   ARCHITECT — AUTH API CLIENT
-   Replace BASE_URL with your backend.
-   ============================================================ */
 const AUTH_API = (() => {
-  const BASE_URL = "http://localhost:3000/api/v1"; // ← change this
+  const BASE_URL = "http://localhost:3000/api/v1";
 
   return {
     login: (email, password) =>
@@ -16,25 +12,9 @@ const AUTH_API = (() => {
         if (!res.ok) throw new Error(data.message || "Login failed");
         return data; // expects { token, user }
       }),
-
-    // loginWithGoogle: () => {
-    //   // Redirect to OAuth flow or open popup
-    //   window.location.href = `${BASE_URL}/auth/google`;
-    // },
-
-    // SSO / SAML
-    // loginWithSSO: (domain) =>
-    //   fetch(`${BASE_URL}/auth/sso`, {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({ domain }),
-    //   }).then((res) => res.json()),
   };
 })();
 
-/* ============================================================
-   FORM LOGIC
-   ============================================================ */
 const emailEl = document.getElementById("email");
 const passwordEl = document.getElementById("password");
 const loginBtn = document.getElementById("login-btn");
@@ -93,18 +73,8 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Enter") loginBtn.click();
 });
 
-// Google login
-// document
-//   .getElementById("google-login-btn")
-//   .addEventListener("click", () => AUTH_API.loginWithGoogle());
-
 function setLoading(on) {
   loginBtn.disabled = on;
   spinner.classList.toggle("d-none", !on);
   arrow.classList.toggle("d-none", on);
 }
-
-// If already logged in, redirect
-// if (localStorage.getItem("architect_token")) {
-//   window.location.href = "dashboard.html";
-// }

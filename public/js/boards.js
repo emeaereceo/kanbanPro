@@ -1,12 +1,5 @@
-/* ============================================================
-   ARCHITECT — BOARDS API CLIENT
-   Replace BASE_URL with your backend.
-   ============================================================ */
 const API = (() => {
-  const BASE_URL = "http://localhost:3000/api/v1"; // ← change this
-  // function getAuthToken() {
-  //   return localStorage.getItem("architect_token") || "";
-  // }
+  const BASE_URL = "http://localhost:3000/api/v1";
   async function request(method, path, body = null) {
     const opts = {
       method,
@@ -24,70 +17,14 @@ const API = (() => {
     getBoards: () => request("GET", "/boards"),
     createBoard: (data) => request("POST", "/boards", data),
     deleteBoard: (id) => request("DELETE", `/boards/${id}`),
-    // starBoard: (id, star) =>
-    //   request("PATCH", `/boards/${id}`, { starred: star }),
     getCurrentUser: () => request("GET", "/users/me"),
+    updateBoard: (boardId, data) => request("PUT", `/boards/${boardId}`, data),
+    logout: () => request("POST", "/auth/logout"),
   };
 })();
 
-/* ============================================================
-   MOCK DATA
-   ============================================================ */
-const MOCK_BOARDS = [
-  {
-    id: 1,
-    name: "Product Launch",
-    description: "Q4 product launch coordination and tracking.",
-    color: "#0f57d0",
-    visibility: "shared",
-    starred: true,
-    taskCount: 6,
-    memberCount: 4,
-    updatedAt: "2024-06-20",
-  },
-  {
-    id: 2,
-    name: "Design System",
-    description: "Component library and token documentation.",
-    color: "#7c4dff",
-    visibility: "private",
-    starred: false,
-    taskCount: 12,
-    memberCount: 2,
-    updatedAt: "2024-06-18",
-  },
-  {
-    id: 3,
-    name: "Marketing Q3",
-    description: "Campaign planning and content calendar.",
-    color: "#e91e63",
-    visibility: "shared",
-    starred: false,
-    taskCount: 8,
-    memberCount: 5,
-    updatedAt: "2024-06-15",
-  },
-  {
-    id: 4,
-    name: "Engineering Sprint",
-    description: "Backend infrastructure and API work.",
-    color: "#198754",
-    visibility: "private",
-    starred: true,
-    taskCount: 15,
-    memberCount: 3,
-    updatedAt: "2024-06-21",
-  },
-];
-
-/* ============================================================
-   STATE
-   ============================================================ */
 const AppState = { boards: [], filter: "all", search: "" };
 
-/* ============================================================
-   RENDER
-   ============================================================ */
 function formatDate(str) {
   if (!str) return "";
   return new Date(str).toLocaleDateString("es-ES", {
@@ -96,24 +33,86 @@ function formatDate(str) {
   });
 }
 
-// function filteredBoards() {
-//   return AppState.boards.filter((b) => {
-//     const matchSearch =
-//       b.name.toLowerCase().includes(AppState.search) ||
-//       (b.description || "").toLowerCase().includes(AppState.search);
-//     const matchFilter =
-//       AppState.filter === "all"
-//         ? true
-//         : AppState.filter === "mine"
-//           ? b.visibility === "private"
-//           : AppState.filter === "shared"
-//             ? b.visibility === "shared"
-//             : AppState.filter === "starred"
-//               ? b.starred
-//               : true;
-//     return matchSearch && matchFilter;
-//   });
-// }
+function openEditBoard(board) {
+  document.getElementById("edit-board-name-input").value = board.name || "";
+  document.getElementById("edit-board-desc-input").value =
+    board.description || "";
+
+  // Marcar el color actual
+  document.querySelectorAll("#edit-color-swatches .swatch").forEach((s) => {
+    s.classList.toggle("selected", s.dataset.color === board.color);
+  });
+
+  // Marcar visibilidad actual
+  document.querySelector(
+    `input[name="edit-visibility"][value="${board.visibility || "private"}"]`,
+  ).checked = true;
+
+  document.getElementById("update-board-btn").dataset.boardId = board.id;
+  new bootstrap.Modal(document.getElementById("editBoardModal")).show();
+}
+
+// Swatches del modal de edición
+document.querySelectorAll("#edit-color-swatches .swatch").forEach((s) => {
+  s.addEventListener("click", () => {
+    document
+      .querySelectorAll("#edit-color-swatches .swatch")
+      .forEach((x) => x.classList.remove("selected"));
+    s.classList.add("selected");
+  });
+});
+
+// Guardar cambios
+document
+  .getElementById("update-board-btn")
+  .addEventListener("click", async () => {
+    const name = document.getElementById("edit-board-name-input").value.trim();
+    if (!name) {
+      document.getElementById("edit-board-name-error").style.display = "block";
+      return;
+    }
+    document.getElementById("edit-board-name-error").style.display = "none";
+
+    const boardId = document.getElementById("update-board-btn").dataset.boardId;
+    const selectedColor = document.querySelector(
+      "#edit-color-swatches .swatch.selected",
+    )?.dataset.color;
+    const visibility = document.querySelector(
+      'input[name="edit-visibility"]:checked',
+    ).value;
+
+    const spinner = document.getElementById("edit-board-spinner");
+    spinner.classList.remove("d-none");
+
+    try {
+      await API.updateBoard(boardId, {
+        name,
+        description: document
+          .getElementById("edit-board-desc-input")
+          .value.trim(),
+        color: selectedColor,
+        visibility,
+      });
+      showToast("Tablero actualizado!", "success");
+      bootstrap.Modal.getInstance(
+        document.getElementById("editBoardModal"),
+      ).hide();
+      await renderBoards();
+    } catch (err) {
+      console.error(err);
+      showToast("No se pudo actualizar el tablero.", "error");
+    } finally {
+      spinner.classList.add("d-none");
+    }
+  });
+
+// Reset al cerrar
+document
+  .getElementById("editBoardModal")
+  .addEventListener("hidden.bs.modal", () => {
+    document.getElementById("edit-board-name-error").style.display = "none";
+    document.getElementById("update-board-btn").dataset.boardId = "";
+  });
 
 function renderBoards() {
   const grid = document.getElementById("boards-grid");
@@ -138,9 +137,16 @@ function renderBoards() {
     col.innerHTML = `
       <div class="board-card" data-id="${board.id}">
         <div class="accent" style="background:${board.color}"></div>
-        <button class="delete-btn" data-id="${board.id}" title="Delete board">
-          <span class="material-symbols-outlined" style="font-size:1.1rem">delete</span>
-        </button>
+
+        <div class="card-actions">
+          <button class="edit-btn" data-id="${board.id}" title="Edit board">
+            <span class="material-symbols-outlined" style="font-size:1.1rem">edit</span>
+          </button>
+
+          <button class="delete-btn" data-id="${board.id}" title="Delete board">
+            <span class="material-symbols-outlined" style="font-size:1.1rem">delete</span>
+          </button>
+        </div>
         <div class="d-flex align-items-start gap-2 mt-1 mb-2">
           <div style="width:36px;height:36px;border-radius:10px;background:${board.color}18;display:flex;align-items:center;justify-content:center;flex-shrink:0">
             <span class="material-symbols-outlined" style="font-size:1.15rem;color:${board.color}">dashboard</span>
@@ -160,12 +166,8 @@ function renderBoards() {
       </div>`;
     grid.appendChild(col);
 
-    // Click card → go to board (not delete/star)
     col.querySelector(".board-card").addEventListener("click", (e) => {
-      if (
-        e.target.closest(".delete-btn")
-        // e.target.closest(".star-btn")
-      )
+      if (e.target.closest(".delete-btn") || e.target.closest(".edit-btn"))
         return;
       window.location.href = `dashboard.html?board=${board.id}`;
     });
@@ -177,6 +179,11 @@ function renderBoards() {
       document.getElementById("delete-modal-name").textContent =
         `"${board.name}" Se eliminará permanentemente.`;
       new bootstrap.Modal(document.getElementById("deleteModal")).show();
+    });
+    // Edit
+    col.querySelector(".edit-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      openEditBoard(board);
     });
   });
 
@@ -193,9 +200,6 @@ function renderBoards() {
     .addEventListener("click", openNewBoardModal);
 }
 
-/* ============================================================
-   LOAD
-   ============================================================ */
 async function loadUser() {
   try {
     const { user } = await API.getCurrentUser();
@@ -219,9 +223,6 @@ async function loadBoards() {
   renderBoards();
 }
 
-/* ============================================================
-   NEW BOARD
-   ============================================================ */
 let selectedColor = "#0f57d0";
 
 function openNewBoardModal() {
@@ -283,9 +284,6 @@ document
     setModalLoading("board-spinner", "save-board-btn", false);
   });
 
-/* ============================================================
-   DELETE BOARD
-   ============================================================ */
 let pendingDeleteId = null;
 
 document
@@ -308,30 +306,6 @@ document
     setModalLoading("delete-spinner", "confirm-delete-btn", false);
   });
 
-/* ============================================================
-   SEARCH & FILTER
-   ============================================================ */
-// document
-//   .getElementById("search-input")
-//   .addEventListener("input", function () {
-//     AppState.search = this.value.toLowerCase().trim();
-//     renderBoards();
-//   });
-
-// document.querySelectorAll(".filter-tab").forEach((tab) => {
-//   tab.addEventListener("click", () => {
-//     document
-//       .querySelectorAll(".filter-tab")
-//       .forEach((t) => t.classList.remove("active"));
-//     tab.classList.add("active");
-//     AppState.filter = tab.dataset.filter;
-//     renderBoards();
-//   });
-// });
-
-/* ============================================================
-   SIDEBAR MOBILE
-   ============================================================ */
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("sidebar-overlay");
 function openSidebar() {
@@ -351,9 +325,6 @@ document
   );
 overlay.addEventListener("click", closeSidebar);
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
 document
   .getElementById("new-board-btn")
   .addEventListener("click", openNewBoardModal);
@@ -382,16 +353,23 @@ function showToast(message, type = "info") {
   setTimeout(() => el.remove(), 4000);
 }
 
-/* ============================================================
-   INIT
-   ============================================================ */
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  try {
+    await API.logout();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    window.location.href = "/login.html";
+  }
+});
+
 (async function init() {
   try {
-    await API.getCurrentUser(); // si no hay token, lanza error 401
+    await API.getCurrentUser();
     document.body.style.visibility = "visible";
   } catch {
-    window.location.href = "/login.html"; // redirige al login
-    return; // detiene el resto del init
+    window.location.href = "/login.html";
+    return;
   }
   await Promise.all([loadUser(), loadBoards()]);
 })();

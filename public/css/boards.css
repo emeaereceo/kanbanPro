@@ -53,27 +53,40 @@
   align-items: center;
   gap: 0.3rem;
 }
-.board-card .delete-btn {
+
+/* Contenedor de ambos botones */
+.board-card .card-actions {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+  display: flex;
+  gap: 0.2rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.board-card:hover .card-actions {
+  opacity: 1;
+}
+
+/* Botones sin position absolute */
+.board-card .delete-btn,
+.board-card .edit-btn {
   background: none;
   border: none;
   color: var(--outline-variant);
   padding: 0.2rem;
   border-radius: 6px;
-  opacity: 0;
   transition:
-    opacity 0.2s,
     color 0.2s,
     background 0.2s;
-}
-.board-card:hover .delete-btn {
-  opacity: 1;
 }
 .board-card .delete-btn:hover {
   color: var(--error);
   background: rgba(168, 56, 54, 0.08);
+}
+.board-card .edit-btn:hover {
+  color: var(--primary);
+  background: rgba(15, 87, 208, 0.08);
 }
 
 .board-new {
