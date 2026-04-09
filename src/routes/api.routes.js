@@ -41,7 +41,8 @@ router.delete("/tableros/:tableroId/listas/:listaId", deleteLista);
 // TARJETAS  →  /api/listas/:listaId/tarjetas
 // ─────────────────────────────────────────────
 router.post("/lists/:listId/tasks", createTarjeta);
-router.put("/listas/:listaId/tarjetas/:tarjetaId", updateTarjeta);
+// router.put("/listas/:listaId/tarjetas/:tarjetaId", updateTarjeta);
+router.put("/tasks/:taskId", updateTarjeta);
 router.delete("/listas/:listaId/tarjetas/:tarjetaId", deleteTarjeta);
 
 export default router;

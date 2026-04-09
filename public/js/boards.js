@@ -386,5 +386,12 @@ function showToast(message, type = "info") {
    INIT
    ============================================================ */
 (async function init() {
+  try {
+    await API.getCurrentUser(); // si no hay token, lanza error 401
+    document.body.style.visibility = "visible";
+  } catch {
+    window.location.href = "/login.html"; // redirige al login
+    return; // detiene el resto del init
+  }
   await Promise.all([loadUser(), loadBoards()]);
 })();

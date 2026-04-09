@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="./css/global.css" />
     <link rel="stylesheet" href="./css/boards.css" />
   </head>
-  <body>
+  <body style="visibility: hidden">
     <!-- SIDEBAR -->
     <aside id="sidebar">
       <div class="d-flex align-items-center gap-2 mb-4">
@@ -291,7 +291,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-3 border-0 shadow">
           <div class="modal-header border-0 pb-0">
-            <h5 class="modal-title brand fw-bold">New Board</h5>
+            <h5 class="modal-title brand fw-bold">Nuevo Tablero</h5>
             <button
               type="button"
               class="btn-close"
@@ -309,13 +309,13 @@
                   letter-spacing: 0.07em;
                   color: var(--on-surface-variant);
                 "
-                >Board Name *</label
+                >Nombre tablero *</label
               >
               <input
                 type="text"
                 class="form-control"
                 id="board-name-input"
-                placeholder="e.g. Product Launch, Sprint Q3…"
+                placeholder="Lanzamiento producto, Sprint Q3…"
                 style="
                   background: var(--surface-high);
                   border: none;
@@ -331,7 +331,7 @@
                 "
                 id="board-name-error"
               >
-                Name is required.
+                El nombre es requerido.
               </div>
             </div>
             <div class="mb-3">
@@ -344,12 +344,12 @@
                   letter-spacing: 0.07em;
                   color: var(--on-surface-variant);
                 "
-                >Description</label
+                >Descripción</label
               >
               <textarea
                 class="form-control"
                 id="board-desc-input"
-                placeholder="What is this board for?"
+                placeholder="Para que usaras este tablero?"
                 rows="2"
                 style="
                   background: var(--surface-high);
@@ -370,7 +370,7 @@
                   letter-spacing: 0.07em;
                   color: var(--on-surface-variant);
                 "
-                >Accent Color</label
+                >Tema</label
               >
               <div class="d-flex gap-2 flex-wrap" id="color-swatches">
                 <div
@@ -420,7 +420,7 @@
                   letter-spacing: 0.07em;
                   color: var(--on-surface-variant);
                 "
-                >Visibility</label
+                >Visibilidad</label
               >
               <div class="d-flex gap-2">
                 <label
@@ -443,7 +443,7 @@
                     style="font-size: 1rem"
                     >lock</span
                   >
-                  Private
+                  Privado
                 </label>
                 <label
                   class="d-flex align-items-center gap-2 p-3 rounded-3 flex-grow-1"
@@ -464,7 +464,7 @@
                     style="font-size: 1rem"
                     >group</span
                   >
-                  Shared
+                  Compartido
                 </label>
               </div>
             </div>
@@ -475,7 +475,7 @@
               data-bs-dismiss="modal"
               style="color: var(--on-surface-variant)"
             >
-              Cancel
+              Cancelar
             </button>
             <button
               class="btn fw-bold d-flex align-items-center gap-2"
@@ -492,7 +492,7 @@
                 font-size: 0.85rem;
               "
             >
-              Create Board
+              Crear tablero
               <div
                 class="spinner-border spinner-border-sm d-none"
                 id="board-spinner"

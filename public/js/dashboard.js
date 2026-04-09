@@ -33,7 +33,7 @@ const API = (() => {
     //   request("POST", `/boards/${boardId}/tasks`, data),
     createTask: (listId, data) =>
       request("POST", `/lists/${listId}/tasks`, data),
-    updateTask: (taskId, data) => request("PATCH", `/tasks/${taskId}`, data),
+    updateTask: (taskId, data) => request("PUT", `/tasks/${taskId}`, data),
     deleteTask: (taskId) => request("DELETE", `/tasks/${taskId}`),
     moveTask: (taskId, status) =>
       request("PATCH", `/tasks/${taskId}`, { status }),
@@ -137,6 +137,16 @@ function tagClass(color) {
       : "bg-secondary-soft";
 }
 
+function formatDate(str) {
+  if (!str) return null;
+  const date = new Date(str);
+  return date.toLocaleDateString("es-CL", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 function renderAvatars(assignees) {
   return `<div class="avatar-stack">${assignees
     .map(
@@ -151,15 +161,9 @@ function renderTask(task) {
   const accent = task.accent
     ? `<div class="top-accent" style="background:linear-gradient(90deg,var(--primary),var(--primary-light))"></div>`
     : "";
-  const progressBar =
-    task.progress != null
-      ? `
-          <div class="mb-2">
-            <div class="progress mt-2"><div class="progress-bar" style="width:${task.progress}%;background:var(--primary)"></div></div>
-          </div>`
-      : "";
-  const due = task.dueDate
-    ? `<span class="badge rounded-pill" style="font-size:.6rem;background:var(--surface-container);color:var(--outline)">${task.dueDate}</span>`
+
+  const due = formatDate(task.due_date)
+    ? `<span class="badge rounded-pill" style="font-size:.6rem;background:var(--surface-container);color:var(--outline)">${formatDate(task.due_date)}</span>`
     : "";
 
   return `
@@ -168,16 +172,13 @@ function renderTask(task) {
             <div class="d-flex flex-wrap gap-1 mb-2">
               <span class="tag ${tagClass(task.tagColor)}">${task.tag || ""}</span>
             </div>
-            <h5>${task.title}</h5>
-            ${progressBar}
+            <h4>${task.title}</h4>
             <div class="d-flex align-items-center justify-content-between mt-2">
               <div class="d-flex align-items-center">
-                ${renderAvatars(task.assignees || [])}
                 ${due}
               </div>
               <div class="d-flex gap-1">
-                ${task.progress != null ? `<span class="meta"><span class="material-symbols-outlined" style="font-size:.9rem;vertical-align:middle">schedule</span> ${task.progress}%</span>` : ""}
-                ${task.attachments ? `<span class="meta"><span class="material-symbols-outlined" style="font-size:.9rem;vertical-align:middle">attachment</span> ${task.attachments}</span>` : ""}
+                ${task.author ? `<span class="meta"> ${task.author}</span>` : ""}
               </div>
             </div>
           </div>`;
@@ -251,6 +252,20 @@ function renderBoard(listas) {
       new bootstrap.Modal(document.getElementById("newTaskModal")).show();
     });
   });
+
+  // Al final de renderBoard, agrega:
+  area.querySelectorAll(".task-card").forEach((card) => {
+    card.style.cursor = "pointer";
+    card.addEventListener("click", () => {
+      // Busca la tarjeta en las listas del board actual
+      const taskId = parseInt(card.dataset.taskId);
+      const board = /* necesitas tener el board en scope */ AppState.board;
+      const task = board.Listas.flatMap((l) => l.Tarjetas).find(
+        (t) => t.id === taskId,
+      );
+      if (task) openTaskDetail(task);
+    });
+  });
 }
 
 /* ============================================================
@@ -259,12 +274,10 @@ function renderBoard(listas) {
 //const ACTIVE_BOARD_ID = 1; // ← replace with dynamic board selector if needed
 const params = new URLSearchParams(window.location.search);
 const ACTIVE_BOARD_ID = parseInt(params.get("board")) || 1;
-console.log("tablero", ACTIVE_BOARD_ID);
 
 async function loadUser() {
   try {
     const { user } = await API.getCurrentUser();
-    console.log(user);
 
     document.getElementById("sidebar-username").textContent = user.name;
     document.getElementById("sidebar-email").textContent = user.email;
@@ -288,6 +301,7 @@ async function loadBoard() {
 }
 
 async function applyBoardData(board) {
+  AppState.board = board;
   const totalTasks = (board.Listas || []).reduce(
     (acc, lista) => acc + (lista.Tarjetas || []).length,
     0,
@@ -362,6 +376,64 @@ document
   .addEventListener("click", () =>
     new bootstrap.Modal(document.getElementById("newTaskModal")).show(),
   );
+
+/* ============================================================
+    VIEW AND EDIT TASK  
+  ============================================================ */
+const AppState = { board: null };
+function openTaskDetail(task) {
+  document.getElementById("detail-title-input").value = task.title || "";
+  document.getElementById("detail-description-input").value =
+    task.description || "";
+  document.getElementById("detail-tag-input").value = task.tag || "";
+  document.getElementById("detail-author-input").value = task.author || "";
+  document.getElementById("detail-start-input").value = task.start_date
+    ? task.start_date.split("T")[0]
+    : "";
+  document.getElementById("detail-due-input").value = task.due_date
+    ? task.due_date.split("T")[0]
+    : "";
+
+  // Guarda el id en el botón para usarlo al guardar
+  document.getElementById("save-detail-btn").dataset.taskId = task.id;
+
+  new bootstrap.Modal(document.getElementById("taskDetailModal")).show();
+}
+
+// Guarda los cambios
+document
+  .getElementById("save-detail-btn")
+  .addEventListener("click", async () => {
+    const taskId = document.getElementById("save-detail-btn").dataset.taskId;
+    const payload = {
+      title: document.getElementById("detail-title-input").value.trim(),
+      description: document
+        .getElementById("detail-description-input")
+        .value.trim(),
+      tag: document.getElementById("detail-tag-input").value.trim(),
+      start_date: document.getElementById("detail-start-input").value || null,
+      due_date: document.getElementById("detail-due-input").value || null,
+    };
+
+    try {
+      await API.updateTask(taskId, payload);
+      showToast("Tarea actualizada!", "success");
+      bootstrap.Modal.getInstance(
+        document.getElementById("taskDetailModal"),
+      ).hide();
+      await loadBoard();
+    } catch (err) {
+      console.error(err);
+      showToast("No se pudo actualizar la tarea.", "error");
+    }
+  });
+
+// Reset al cerrar
+document
+  .getElementById("taskDetailModal")
+  .addEventListener("hidden.bs.modal", () => {
+    document.getElementById("save-detail-btn").dataset.taskId = "";
+  });
 
 /* ============================================================
    NEW COLUMN
@@ -453,5 +525,12 @@ function showToast(message, type = "info") {
          INIT
          ============================================================ */
 (async function init() {
+  try {
+    await API.getCurrentUser(); // si no hay token, lanza error 401
+    document.body.style.visibility = "visible";
+  } catch {
+    window.location.href = "/login.html"; // redirige al login
+    return; // detiene el resto del init
+  }
   await Promise.all([loadUser(), loadBoard()]);
 })();

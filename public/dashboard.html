@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="./css/global.css" />
     <link rel="stylesheet" href="./css/dashboard.css" />
   </head>
-  <body>
+  <body style="visibility: hidden">
     <!-- SIDEBAR -->
     <aside id="sidebar">
       <div class="d-flex align-items-center gap-2 mb-4">
@@ -524,6 +524,198 @@
               "
             >
               Crear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASK DETAIL MODAL -->
+    <div class="modal fade" id="taskDetailModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 border-0 shadow">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title brand fw-bold">Detalle de tarea</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body pt-2">
+            <div class="mb-3">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Título</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="detail-title-input"
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                "
+              />
+            </div>
+
+            <div class="mb-3">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Descripción</label
+              >
+              <textarea
+                class="form-control"
+                id="detail-description-input"
+                rows="3"
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                "
+              ></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Tag</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="detail-tag-input"
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                "
+              />
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label
+                  class="form-label"
+                  style="
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.07em;
+                    color: var(--on-surface-variant);
+                  "
+                  >Fecha inicio</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="detail-start-input"
+                  style="
+                    background: var(--surface-high);
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                  "
+                />
+              </div>
+              <div class="col-6">
+                <label
+                  class="form-label"
+                  style="
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.07em;
+                    color: var(--on-surface-variant);
+                  "
+                  >Fecha término</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="detail-due-input"
+                  style="
+                    background: var(--surface-high);
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 0.85rem;
+                  "
+                />
+              </div>
+            </div>
+
+            <div class="mb-1">
+              <label
+                class="form-label"
+                style="
+                  font-size: 0.72rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.07em;
+                  color: var(--on-surface-variant);
+                "
+                >Autor</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="detail-author-input"
+                disabled
+                style="
+                  background: var(--surface-high);
+                  border: none;
+                  border-radius: 8px;
+                  opacity: 0.6;
+                "
+              />
+            </div>
+          </div>
+          <div class="modal-footer border-0 pt-0">
+            <button
+              class="btn btn-sm"
+              data-bs-dismiss="modal"
+              style="color: var(--on-surface-variant)"
+            >
+              Cancelar
+            </button>
+            <button
+              class="btn fw-bold"
+              id="save-detail-btn"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary),
+                  var(--primary-light)
+                );
+                color: #fff;
+                border-radius: 99px;
+                padding: 0.4rem 1.4rem;
+                font-size: 0.85rem;
+              "
+            >
+              Guardar
             </button>
           </div>
         </div>

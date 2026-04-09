@@ -227,21 +227,13 @@ export const createTarjeta = async (req, res) => {
 };
 
 export const updateTarjeta = async (req, res) => {
-  const { listaId, tarjetaId } = req.params;
-  const {
-    title,
-    description,
-    priority,
-    tag,
-    status,
-    start_date,
-    due_date,
-    autor,
-  } = req.body;
+  // const { listaId, tarjetaId } = req.params;
+  const { taskId } = req.params;
+  const { title, description, tag, start_date, due_date, autor } = req.body;
 
   try {
     const tarjeta = await Tarjeta.findOne({
-      where: { id: tarjetaId, listId: listaId },
+      where: { id: taskId },
     });
     if (!tarjeta)
       return res.status(404).json({ error: "Tarjeta no encontrada" });
@@ -249,9 +241,7 @@ export const updateTarjeta = async (req, res) => {
     await tarjeta.update({
       title,
       description,
-      priority,
       tag,
-      status,
       start_date,
       due_date,
       autor,
